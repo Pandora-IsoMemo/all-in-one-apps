@@ -1,2 +1,3 @@
-# HelperScripts
-a collection of versatile helper scripts
+# Pandora-IsoMemo HelperScripts
+
+A collection of versatile helper scripts.
