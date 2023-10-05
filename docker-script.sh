@@ -15,12 +15,18 @@ apps=(
   #"PlotR"
   #"ReSources"
 # old names 
-  "bmsc-app"
-  "bpred"
-  "iso-app"
-  "osteo-bior"
-  "plotr"
-  "resources"
+  "bmsc-app:main"
+  "bmsc-app:beta"
+  "bpred:main"
+  "bpred:beta"
+  "iso-app:main"
+  "iso-app:beta"
+  "osteo-bior:main"
+  "osteo-bior:beta"
+  "plotr:main"
+  "plotr:beta"
+  "resources:main"
+  "resources:beta"
 )
 
 function check_root(){
@@ -58,23 +64,21 @@ function get_free_port() {
 }
 
 function pull_image() {
-  docker pull ghcr.io/pandora-isomemo/$app:main
-  docker pull ghcr.io/pandora-isomemo/$app:beta
+  docker pull ghcr.io/pandora-isomemo/$app
 }
 
 function start_container() {
-    version="main"
     port=$(get_free_port)
     container_name="ghcr.io/pandora-isomemo/$app"
     
-    echo "Starting Docker image $app:$version"
+    echo "Starting Docker image $app"
     
-    if docker run -d -q -p $port:3838 $container_name:$version; then
-      echo "Docker image $app:$version started successfully"
+    if docker run -d -q -p $port:3838 $container_name; then
+      echo "Docker image $app started successfully"
       echo "Please open your web browser and visit: http://localhost:$port"
       printf "\n"
     else
-      echo "Error starting Docker image $app:$version. Please ensure the image has been pulled and the port $port is free."
+      echo "Error starting Docker image $app. Please ensure the image has been pulled and the port $port is free."
     fi
 }
 
