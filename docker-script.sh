@@ -23,6 +23,13 @@ apps=(
   "resources"
 )
 
+function check_root(){
+  if [ "$EUID" -ne 0 ]; then
+    echo >&2 "Please run as root";
+    exit 1;
+  fi
+}
+
 function check_requirements() {
   req_warning='The required ss tool is not installed. Please install it and run the script again.'
     
@@ -32,7 +39,6 @@ function check_requirements() {
       exit 1; 
     }
 }
-
 
 function get_free_port() {
     local port=3838
@@ -116,65 +122,66 @@ function select_apps() {
 }
 
 clear
+check_root
 check_requirements
 
 while true
 do
-    echo "Pandora-Isomemo Helper Script:"; printf "\n";
-    echo "1. List all local pandora-isomemo images"
-    echo "2. Pull docker images";
-    echo "3. Start docker container";
-    echo "4. Stop running docker container":
-    echo "5. Exit script"; printf "\n"
+  echo "Pandora-Isomemo Helper Script:"; printf "\n";
+  echo "1. List all local pandora-isomemo images"
+  echo "2. Pull docker images";
+  echo "3. Start docker container";
+  echo "4. Stop running docker container":
+  echo "5. Exit script"; printf "\n"
 
-    read -rep $'Please enter your choice [Press 1-5]: ' choice
+  read -rep $'Please enter your choice [Press 1-5]: ' choice
 
-    case $choice in
-        1)
-          clear
-          
-          echo "List of all local pandora-isomemo images"; printf "\n"
-          docker images "ghcr.io/pandora-isomemo/*" \
-            | (read -r; printf "%s\n" "$REPLY"; sort)
-          printf "\n"
-          
-          echo "List of all running pandora-isomemo container"; printf "\n"
-          docker ps
-          printf "\n"
-          
-          read -p "Go back to menu [Press Any Key]"
-          clear
-          ;;
-        2) 
-          cmd_to_run="pull_image"
-          select_apps
-          clear
-          ;;
-        3)
-          cmd_to_run="start_container"
-          select_apps
-          clear
-          ;;
-        4)
-          cmd_to_run="stop_container"
-          #ToDo: stop container
-          echo $cmd_to_run
-          read -p "docker container stopped!"
-          #for container_id in $(docker ps --filter "name=myapp" --format "{{.ID}}"); do
-          #  docker stop $container_id 
-          #done
-          #clear
-          ;;
-        5)
-          # ToDo Warning for running container
-          echo "Exiting script. Bye!"
-          exit 0
-          ;;
-        *)
-          read -p "Invalid option. try again. [Press Any Key]";
-          clear;
-          ;;
-    esac
+  case $choice in
+      1)
+        clear
+        
+        echo "List of all local pandora-isomemo images"; printf "\n"
+        docker images "ghcr.io/pandora-isomemo/*" \
+          | (read -r; printf "%s\n" "$REPLY"; sort)
+        printf "\n"
+        
+        echo "List of all running pandora-isomemo container"; printf "\n"
+        docker ps
+        printf "\n"
+        
+        read -p "Go back to menu [Press Any Key]"
+        clear
+        ;;
+      2) 
+        cmd_to_run="pull_image"
+        select_apps
+        clear
+        ;;
+      3)
+        cmd_to_run="start_container"
+        select_apps
+        clear
+        ;;
+      4)
+        cmd_to_run="stop_container"
+        #ToDo: stop container
+        echo $cmd_to_run
+        read -p "docker container stopped!"
+        #for container_id in $(docker ps --filter "name=myapp" --format "{{.ID}}"); do
+        #  docker stop $container_id 
+        #done
+        #clear
+        ;;
+      5)
+        # ToDo Warning for running container
+        echo "Exiting script. Bye!"
+        exit 0
+        ;;
+      *)
+        read -p "Invalid option. try again. [Press Any Key]";
+        clear;
+        ;;
+  esac
 done
 
 #############
