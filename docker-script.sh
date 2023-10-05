@@ -31,13 +31,18 @@ function check_root(){
 }
 
 function check_requirements() {
-  req_warning='The required ss tool is not installed. Please install it and run the script again.'
-    
-  command -v ss >/dev/null 2>&1 || 
+  cmds=(
+    "ss"
+    "docker"
+  )
+
+  for cmd in "${cmds[@]}"; do
+    command -v $cmd >/dev/null 2>&1 || 
     {
-      echo >&2 "$req_warning"; 
+      echo >&2 "Please install $cmd and rerun the script!"; 
       exit 1; 
     }
+  done
 }
 
 function get_free_port() {
