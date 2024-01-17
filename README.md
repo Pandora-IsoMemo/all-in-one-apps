@@ -1,4 +1,4 @@
-# Pandora-IsoMemo HelperScripts
+# Pandora-IsoMemo Scripts
 
 A collection of versatile helper scripts.
 
