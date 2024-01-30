@@ -197,7 +197,7 @@ function stop_container(){
 function menu() {
   while true
   do
-    echo "Pandora-Isomemo Helper Script:"; printf "\n";
+    echo "Pandora-Isomemo - All-in-One Script:"; printf "\n";
     echo "1. List images & running containers"
     echo "2. Pull docker images";
     echo "3. Start docker container";
