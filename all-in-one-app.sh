@@ -239,7 +239,7 @@ function menu() {
 function main() {
   clear
   check_root
-  check_requirement
+  check_requirements
   menu
 }
 
