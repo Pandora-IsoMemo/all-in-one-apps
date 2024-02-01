@@ -41,6 +41,3 @@ The script requires the following software to be installed:
     * should be installed by default on most Linux distributions and on macOS
     * Linux: `sudo apt update & sudo apt install net-tools`
     * MacOS: `brew install net-tools`
-
-
-
