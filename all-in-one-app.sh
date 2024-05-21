@@ -7,16 +7,16 @@
 
 # List of applications / docker images
 apps=(
-  "bmsc-app:main"
-  "bmsc-app:beta"
+  "bmsc-s:main"
+  "bmsc-s:beta"
   "bpred:main"
   "bpred:beta"
-  "iso-app:main"
-  "iso-app:beta"
+  "dssm:main"
+  "dssn:beta"
   "mapr:main"
   "mapr:beta"
-  "osteo-bior:main"
-  "osteo-bior:beta"
+  "osteobior:main"
+  "osteobior:beta"
   "plotr:main"
   "plotr:beta"
   "resources:main"
