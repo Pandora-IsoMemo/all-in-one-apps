@@ -144,7 +144,7 @@ function start_container() {
   port=$(get_free_port)
   container_name="ghcr.io/pandora-isomemo/$app"
 
-  echo "Starting Docker image $app"
+  echo "Starting Docker Container $app"
 
   if docker run -d -q -p "$port":3838 "$container_name"; then
     echo "Docker image $app started successfully"
