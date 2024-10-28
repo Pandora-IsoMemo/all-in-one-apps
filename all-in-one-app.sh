@@ -42,7 +42,7 @@ function check_requirements() {
   )
 
   for cmd in "${cmds[@]}"; do
-    command -v $cmd >/dev/null 2>&1 ||
+    command -v "$cmd" >/dev/null 2>&1 ||
       {
         echo >&2 "Please install $cmd and rerun the script!"
         exit 1
@@ -63,7 +63,7 @@ function get_free_port() {
 }
 
 function pull_image() {
-  docker pull ghcr.io/pandora-isomemo/$app
+  docker pull ghcr.io/pandora-isomemo/"$app"
 }
 
 function display_choices() {
@@ -82,7 +82,7 @@ function select_apps() {
 
   # Prompt the user to enter subset of apps
   printf "\n"
-  read -p "Please enter your choices [space-separated list of integers or 'all']: " -a choices
+  read -rp "Please enter your choices [space-separated list of integers or 'all']: " -a choices
   printf "\n"
 
   for choice in "${choices[@]}"; do
@@ -93,7 +93,7 @@ function select_apps() {
       done
 
       printf "\n"
-      read -p "$cmd_to_run for all apps finished. [Press Any Key]"
+      read -rp "$cmd_to_run for all apps finished. [Press Any Key]"
       break
 
     elif [[ $choice =~ ^[0-9]+$ ]] &&
@@ -101,7 +101,7 @@ function select_apps() {
       [[ $choice -le ${#apps[@]} ]]; then
       app="${apps[$choice - 1]}"
       if [ -z "$app" ]; then
-        read -p "Invalid option $choice. Ignoring. [Press Any Key]"
+        read -rp "Invalid option $choice. Ignoring. [Press Any Key]"
       else
         # Execute the command for the selected app
         # Replace 'your_command' with the actual command you want to run
@@ -109,12 +109,12 @@ function select_apps() {
       fi
 
     else
-      read -p "Invalid choice: $choice. Ignoring. [Press Any Key]"
+      read -rp "Invalid choice: $choice. Ignoring. [Press Any Key]"
     fi
   done
 
   printf "\n"
-  read -p "$cmd_to_run for all chosen apps finished. [Press Any Key]"
+  read -rp "$cmd_to_run for all chosen apps finished. [Press Any Key]"
 }
 
 function ls_docker() {
@@ -136,7 +136,7 @@ function ls_docker() {
   docker ps | grep --color=never "ghcr.io/pandora-isomemo/*"
   printf "\n"
 
-  read -p "Go back to menu [Press Any Key]"
+  read -rp "Go back to menu [Press Any Key]"
   clear
 }
 
@@ -146,7 +146,7 @@ function start_container() {
 
   echo "Starting Docker image $app"
 
-  if docker run -d -q -p $port:3838 $container_name; then
+  if docker run -d -q -p "$port":3838 "$container_name"; then
     echo "Docker image $app started successfully"
     echo "Please open your web browser and visit: http://localhost:$port"
     printf "\n"
@@ -170,8 +170,8 @@ function stop_container() {
   while true; do
     echo "Running Pandora-Isomemo Container:"
     printf "\n"
-    if ! [[ -n "$running_containers" ]]; then
-      read -p "No container started [Press Any Key]"
+    if [[ -z "$running_containers" ]]; then
+      read -rp "No container started [Press Any Key]"
       break
     else
       echo "$running_containers"
@@ -183,19 +183,19 @@ function stop_container() {
       1)
         for id in "${id_array[@]}"; do
           echo "Stopping container $id"
-          docker stop $id
+          docker stop "$id"
         done
 
-        read -p "All pandora-isomemo container stopped [Press Any Key]"
+        read -rp "All pandora-isomemo container stopped [Press Any Key]"
 
         break
         ;;
       2)
-        read -p "No container stopped [Press Any Key]"
+        read -rp "No container stopped [Press Any Key]"
         break
         ;;
       *)
-        read -p "Invalid option. try again. "
+        read -rp "Invalid option. try again. "
         ;;
       esac
     fi
@@ -238,7 +238,7 @@ function menu() {
       exit 0
       ;;
     *)
-      read -p "Invalid option. try again. [Press Any Key]"
+      read -rp "Invalid option. try again. [Press Any Key]"
       clear
       ;;
     esac
